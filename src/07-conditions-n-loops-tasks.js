@@ -27,10 +27,12 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  if (num % 3 === 0 && num % 5 === 0) return 'FizzBuzz';
+  if (num % 3 === 0) return 'Fizz';
+  if (num % 5 === 0) return 'Buzz';
+  return num;
 }
-
 
 /**
  * Returns the factorial of the specified integer n.
@@ -43,8 +45,9 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  if (n === 0) return 1;
+  return n * getFactorial(n - 1);
 }
 
 
@@ -60,8 +63,9 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  if (n2 === n1) return n1;
+  return n2 + getSumBetweenNumbers(n1, n2 - 1);
 }
 
 
@@ -80,10 +84,7 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
-}
-
+const isTriangle = (a, b, c) => a + b > c && a + c > b && b + c > a;
 
 /**
  * Returns true, if two specified axis-aligned rectangles overlap, otherwise false.
@@ -164,10 +165,10 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const newArr = str.replace(/ /g, '').split('');
+  return newArr.find((elem, index, arr) => arr.indexOf(elem) === arr.lastIndexOf(elem)) || null;
 }
-
 
 /**
  * Returns the string representation of math interval,
@@ -208,10 +209,16 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+// function reverseString(str) {
+//   let result = '';
+//   for (let i = 0; i < str.length; i += 1) {
+//     result = str[i] + result;
+//   }
+//   return result;
+// }
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
-
 
 /**
  * Reverse the specified integer number (put all digits in reverse order)
@@ -225,10 +232,17 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+// function reverseInteger(num) {
+//   let sum = '';
+//   while (num) {
+//     sum += num % 10;
+//     num = Math.floor(num / 10);
+//   }
+//   return parseInt(sum, 10);
+// }
+function reverseInteger(num) {
+  return +num.toString().split('').reverse().join('');
 }
-
 
 /**
  * Validates the CCN (credit card number) and return true if CCN is valid
@@ -250,8 +264,24 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  function singleDigit(num) {
+    let sum = 0;
+    while (num) {
+      sum += num % 10;
+      // eslint-disable-next-line no-param-reassign
+      num = Math.floor(num / 10);
+    }
+    return sum;
+  }
+  const arrayFromDigits = ccn.toString().split('');
+  const lastCcnDigit = arrayFromDigits.slice(-1).join('');
+  const numberArr = arrayFromDigits.slice(0, -1).reverse();
+  const multipliedDigitsArr = numberArr.map((elem, index) => (index % 2 === 0 ? elem * 2 : elem));
+  const sumOfMultipliedDigits = multipliedDigitsArr
+    .map((element) => singleDigit(element))
+    .reduce((acc, elem) => acc + elem, 0);
+  return (10 - (sumOfMultipliedDigits % 10)) % 10 === +lastCcnDigit;
 }
 
 /**
