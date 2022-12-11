@@ -600,10 +600,24 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
-}
+/* function getElementByIndexes(arr, indexes) {
+  while (indexes.length !== 1) {
+    arr = arr.flat(); // eslint-disable-line no-param-reassign
+    indexes.length -= 1; // eslint-disable-line no-param-reassign
+  }
+  return arr[indexes.join('')];
+} */
 
+function getElementByIndexes(arr, indexes) {
+  function flatten(array) {
+    if (Array.isArray(array)) {
+      return array.reduce((done, curr) => done.concat(flatten(curr)), []);
+    }
+    return array;
+  }
+  const flatArr = flatten(arr);
+  return flatArr[indexes[indexes.length - 1]];
+}
 
 /**
  * Swaps the head and tail of the specified array:
@@ -623,10 +637,12 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const middle = Math.floor(arr.length / 2);
+  if (arr.length === 1) return arr;
+  return arr.length % 2 === 0 ? [...arr.slice(-middle), ...arr.slice(0, middle)]
+    : [...arr.slice(-middle), ...arr.slice(middle, (middle + 1)), ...arr.slice(0, middle)];
 }
-
 
 module.exports = {
   findElement,
