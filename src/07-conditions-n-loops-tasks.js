@@ -298,8 +298,18 @@ function isCreditCardNumber(ccn) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  function singleDigit(number) {
+    let sum = 0;
+    while (number) {
+      sum += number % 10;
+      // eslint-disable-next-line no-param-reassign
+      number = Math.floor(number / 10);
+    }
+    return sum;
+  }
+  if (Math.floor((!singleDigit(num) / 10))) return singleDigit(num);
+  return singleDigit(singleDigit(num));
 }
 
 
