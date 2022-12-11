@@ -464,8 +464,16 @@ function toStringList(arr) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  return arr.sort((x, y) => {
+    if (x.country < y.country) {
+      return -1;
+    }
+    if (x.country > y.country) {
+      return 1;
+    }
+    return x.city > y.city ? 1 : -1;
+  });
 }
 
 /**
@@ -565,11 +573,14 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
+// function group(array, keySelector, valueSelector) {
+//   return array.reduce((acc, curr) => (acc.get(keySelector(curr))
+//     ? acc.set(valueSelector(curr))
+//     : acc.set(keySelector(curr), valueSelector(curr))), new Map());
+// }
 function group(/* array, keySelector, valueSelector */) {
   throw new Error('Not implemented');
 }
-
-
 /**
  * Projects each element of the specified array to a sequence
  * and flattens the resulting sequences into one array.
